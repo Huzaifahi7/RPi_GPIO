@@ -11,36 +11,33 @@ right_motor_cw=15
 right_motor_ccw=16
 
 
-gpio.setmode(gpio.BOARD)
-gpio.setwarnings(False)
-gpio.setup(left_motor_cw,gpio.OUT)
-gpio.setup(left_motor_ccw,gpio.OUT)
-gpio.setup(right_motor_cw,gpio.OUT)
-gpio.setup(right_motor_ccw,gpio.OUT)
-
-
 def goforward():
+    global left_motor_ccw,left_motor_cw,right_motor_ccw,right_motor_cw
     gpio.output(left_motor_cw,gpio.HIGH)
     gpio.output(right_motor_cw,gpio.HIGH)
     print('going forward')
 
 def turnleft():
+    global left_motor_ccw,left_motor_cw,right_motor_ccw,right_motor_cw
     gpio.output(right_motor_cw,gpio.HIGH)
     gpio.output(left_motor_cw,gpio.LOW)
     time.sleep(0.8)
     gpio.output(right_motor_cw,gpio.LOW)
 
 def turnright():
+    global left_motor_ccw,left_motor_cw,right_motor_ccw,right_motor_cw
     gpio.output(left_motor_cw,gpio.HIGH)
     gpio.output(right_motor_cw,gpio.LOW)
     time.sleep(0.8)
     gpio.outpu(left_motor_cw,gpio.LOW)
 
 def gobackward():
+    global left_motor_ccw,left_motor_cw,right_motor_ccw,right_motor_cw
     gpio.output(left_motor_ccw,gpio.HIGH)
     gpio.output(right_motor_ccw,gpio.HIGH)
 
 def stop():
+    global left_motor_ccw,left_motor_cw,right_motor_ccw,right_motor_cw
     gpio.output(left_motor_cw,gpio.LOW)
     gpio.output(left_motor_ccw,gpio.LOW)
     gpio.output(right_motor_cw,gpio.LOW)
@@ -66,6 +63,12 @@ def checkanddriveleft():
 
 # Define a function for the thread
 def serial_monitor(iss):
+    gpio.setmode(gpio.BOARD)
+    gpio.setwarnings(False)
+    gpio.setup(left_motor_cw,gpio.OUT)
+    gpio.setup(left_motor_ccw,gpio.OUT)
+    gpio.setup(right_motor_cw,gpio.OUT)
+    gpio.setup(right_motor_ccw,gpio.OUT)
     global distance
     ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
     ser.reset_input_buffer()
