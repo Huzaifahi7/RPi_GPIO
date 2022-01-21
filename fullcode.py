@@ -3,20 +3,6 @@ import time
 import serial
 import RPi.GPIO as gpio
 
-#motor notations
-left_motor_cw=31
-left_motor_ccw=32
-right_motor_cw=15
-right_motor_ccw=16
-
-
-gpio.setmode(gpio.BOARD)
-gpio.setwarnings(False)
-gpio.setup(left_motor_cw,gpio.OUT)
-gpio.setup(left_motor_ccw,gpio.OUT)
-gpio.setup(right_motor_cw,gpio.OUT)
-gpio.setup(right_motor_ccw,gpio.OUT)
-
 
 def goforward():
     gpio.output(left_motor_cw,gpio.HIGH)
@@ -84,6 +70,19 @@ def motor_control(ssi):
             pass    
 
 distance=[]
+left_motor_cw=31
+left_motor_ccw=32
+right_motor_cw=15
+right_motor_ccw=16
+
+
+gpio.setmode(gpio.BOARD)
+gpio.setwarnings(False)
+gpio.setup(left_motor_cw,gpio.OUT)
+gpio.setup(left_motor_ccw,gpio.OUT)
+gpio.setup(right_motor_cw,gpio.OUT)
+gpio.setup(right_motor_ccw,gpio.OUT)
+
 try:
     _thread.start_new_thread(serial_monitor,(1,))
     _thread.start_new_thread(motor_control,(1,))
