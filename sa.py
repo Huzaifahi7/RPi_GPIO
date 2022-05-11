@@ -73,7 +73,8 @@ def checkanddriveleft():
             break
     goforward()
 
-def motor_control(ssi):
+def motor_control():
+    print('in motor control')
     goforward()
     while True:
         try:
@@ -86,6 +87,8 @@ def motor_control(ssi):
             gpio.cleanup()
         finally:
             gpio.cleanup()
+print('asking for serial communication')
 ser= serial.Serial('COM4',baudrate=9600,timeout=1)
 distance=[]
+print('serial connection done')
 motor_control()
