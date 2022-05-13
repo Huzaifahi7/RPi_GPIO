@@ -1,5 +1,6 @@
 import RPi.GPIO as gpio
 import time
+import serial
 
 #motor notations
 left_motor_cw=31
@@ -21,21 +22,30 @@ gpio.setup(right_motor_ccw,gpio.OUT)
 
 
 def goforward():
+    print('going forward')
     gpio.output(left_motor_cw,gpio.HIGH)
     gpio.output(right_motor_cw,gpio.HIGH)
-
+    
+def distances():
+    global distance
+    distance=[]
+    ser.write(b'g')
+    arduis=ser.readlines()
+    distance=[int(i.decode('ascii').rstrip('\r\n')) for i in arduis]
 
 def turnleft():
+    print('turning left')
     gpio.output(right_motor_cw,gpio.HIGH)
     gpio.output(left_motor_cw,gpio.LOW)
     time.sleep(0.8)
-    gpio.outpu(right_motor_cw,gpio.LOW)
+    gpio.output(right_motor_cw,gpio.LOW)
 
 def turnright():
+    print('turning right')
     gpio.output(left_motor_cw,gpio.HIGH)
     gpio.output(right_motor_cw,gpio.LOW)
     time.sleep(0.8)
-    gpio.outpu(left_motor_cw,gpio.LOW)
+    gpio.output(left_motor_cw,gpio.LOW)
 
 def gobackward():
     gpio.output(left_motor_ccw,gpio.HIGH)
@@ -46,11 +56,19 @@ def stop():
     gpio.output(left_motor_ccw,gpio.LOW)
     gpio.output(right_motor_cw,gpio.LOW)
     gpio.output(right_motor_ccw,gpio.LOW)
-
-stop()
+ser =serial.Serial('/dev/ttyACM0',baudrate=9600,timeout=1)
+distance=[]
 goforward()
-time.sleep(10)
-turnleft()
-time.sleep(10)
-stop()
-gpio.cleanup()
+while True:
+    distances()
+    print(distance)
+    try:
+        if len(distance)==0:
+            continue
+        if distance[0]<50:
+            turnright()
+        elif distance[1]<50:
+            turnleft()
+    except KeyboardInterrupt:
+        gpio.cleanup()
+        
