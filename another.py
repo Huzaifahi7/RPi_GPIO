@@ -48,10 +48,13 @@ def turnright():
     gpio.output(left_motor_cw,gpio.LOW)
 
 def gobackward():
+    print('going backward')
     gpio.output(left_motor_ccw,gpio.HIGH)
     gpio.output(right_motor_ccw,gpio.HIGH)
+    time.sleep(0.8)
 
 def stop():
+    print('stopped')
     gpio.output(left_motor_cw,gpio.LOW)
     gpio.output(left_motor_ccw,gpio.LOW)
     gpio.output(right_motor_cw,gpio.LOW)
@@ -65,7 +68,10 @@ while True:
     try:
         if len(distance)==0:
             continue
-        if distance[0]<50:
+        if distance[0]<50 and distance[1]<50:
+            gobackward()
+            turnleft()
+        elif distance[0]<50:
             turnright()
         elif distance[1]<50:
             turnleft()
